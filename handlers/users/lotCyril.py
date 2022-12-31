@@ -29,7 +29,7 @@ async def wikipediaInfo(message: types.Message):
 
 @dp.message_handler(state=WikipediaState.startWikipedia)
 async def wikipedia_send(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '☑️Imlo-Xatoni aniqlash', '📕 Wikipedia']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)
@@ -41,7 +41,7 @@ async def wikipedia_send(message: types.Message, state: FSMContext):
             await send_ad_to_all(message)
         elif message.text == "📊 Statistika":
             await show_statistics(message)
-        elif message.text == 'Imlo-Xatoni aniqlash':
+        elif message.text == '✅ Imlo-Xatoni aniqlash':
             await infoImlo(message)
         elif message.text == "📕 Wikipedia":
             await wikipediaInfo(message)
@@ -72,14 +72,14 @@ def checkWord(word, words=words):
         matches.update(get_close_matches(word, words))
     return {'available':available, 'matches':matches}
 
-@dp.message_handler(text='☑️Imlo-Xatoni aniqlash')
+@dp.message_handler(text='✅ Imlo-Xatoni aniqlash')
 async def infoImlo(message: types.Message):
     await message.answer("Tekshirish uchun so'z yuboring")
     await ImloState.startImlo.set()
 
 @dp.message_handler(state=ImloState.startImlo)
 async def checkImlo(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '☑️Imlo-Xatoni aniqlash']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)
@@ -91,7 +91,7 @@ async def checkImlo(message: types.Message, state: FSMContext):
             await send_ad_to_all(message)
         elif message.text == "📊 Statistika":
             await show_statistics(message)
-        elif message.text == 'Imlo-Xatoni aniqlash':
+        elif message.text == '✅ Imlo-Xatoni aniqlash':
             await infoImlo(message)
         elif message.text == "📕 Wikipedia":
             await wikipediaInfo(message)
@@ -129,7 +129,7 @@ async def bot_echo_lotinKiril(message: types.Message):
 
 @dp.message_handler(state=LotinKiril.startLotinKiril)
 async def convert(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '☑️Imlo-Xatoni aniqlash', '📕 Wikipedia']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)
@@ -141,7 +141,7 @@ async def convert(message: types.Message, state: FSMContext):
             await send_ad_to_all(message)
         elif message.text == "📊 Statistika":
             await show_statistics(message)
-        elif message.text == 'Imlo-Xatoni aniqlash':
+        elif message.text == '✅ Imlo-Xatoni aniqlash':
             await infoImlo(message)
         elif message.text == "📕 Wikipedia":
             await wikipediaInfo(message)

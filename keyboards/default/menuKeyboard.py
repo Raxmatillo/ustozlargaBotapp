@@ -9,7 +9,7 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text="🌐 Tarjima qiling"),
         ],
         [
-            KeyboardButton(text="☑️Imlo-Xatoni aniqlash"),
+            KeyboardButton(text="✅ Imlo-Xatoni aniqlash"),
             KeyboardButton(text="📕 Wikipedia"),
         ],
         [
