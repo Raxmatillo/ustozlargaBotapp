@@ -79,7 +79,7 @@ async def infoImlo(message: types.Message):
 
 @dp.message_handler(state=ImloState.startImlo)
 async def checkImlo(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)

@@ -2,19 +2,24 @@ import asyncio
 from filters import IsAdmin
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from keyboards.default.dashboardKeyboard import admin_keyboards
+from keyboards.default.dashboardKeyboard import admin_keyboards, cancel_keyboard
 
 from data.config import ADMINS
 from states.AdminState import ReklamaState
 from loader import dp, db, bot
 
+@dp.message_handler(IsAdmin(), state="*", text="Bekor qilish")
+async def cancel_handler(message: types.Message, state: FSMContext):
+    await state.finish()
+    await message.answer("Bekir qilindi", reply_markup=admin_keyboards)
+
 @dp.message_handler(IsAdmin(), text="/admin")
-async def admin_panel(message: types.Message):  
+async def admin_panel(message: types.Message):
     await message.answer("Siz adminpaneldasiz!", reply_markup=admin_keyboards)
 
 @dp.message_handler(IsAdmin(), text="📌 Reklama")
 async def send_ad_to_all(message: types.Message):
-    await message.answer("Menga reklamani yuboring ...")
+    await message.answer("Menga reklamani yuboring ...", reply=cancel_keyboard)
     await ReklamaState.reklama.set()
 
 
@@ -34,10 +39,10 @@ async def send_reklama(message: types.Message, state: FSMContext):
     await state.finish()
 
 
-# @dp.message_handler(text="/cleandb", user_id=ADMINS)
-# async def get_all_users(message: types.Message):
-#     db.delete_users()
-#     await message.answer("Baza tozalandi!")
+@dp.message_handler(text="/cleandb", user_id=ADMINS)
+async def get_all_users(message: types.Message):
+    db.delete_users()
+    await message.answer("Baza tozalandi!")
 
 @dp.message_handler(IsAdmin(), text="📊 Statistika")
 async def show_statistics(message: types.Message):

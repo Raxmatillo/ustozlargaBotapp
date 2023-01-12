@@ -9,3 +9,12 @@ admin_keyboards = ReplyKeyboardMarkup(
         ]
     ], resize_keyboard=True
 )
+
+
+cancel_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Bekor qilish")
+        ]
+    ], resize_keyboard=True
+)
