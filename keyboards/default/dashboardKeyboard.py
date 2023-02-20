@@ -14,7 +14,7 @@ admin_keyboards = ReplyKeyboardMarkup(
 cancel_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Bekor qilish")
+            KeyboardButton(text="🚫 Bekor qilish")
         ]
     ], resize_keyboard=True
 )

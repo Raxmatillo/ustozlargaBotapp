@@ -13,6 +13,10 @@ menu = ReplyKeyboardMarkup(
             KeyboardButton(text="📕 Wikipedia"),
         ],
         [
+            KeyboardButton(text='PDF -> Word'),
+            KeyboardButton(text='QR kod o\'qish'),
+        ],
+        [
             KeyboardButton(text="📝 Xabar yuborish")
         ]
     ], resize_keyboard=True

@@ -8,7 +8,7 @@ from data.config import ADMINS
 from states.AdminState import ReklamaState
 from loader import dp, db, bot
 
-@dp.message_handler(IsAdmin(), state="*", text="Bekor qilish")
+@dp.message_handler(IsAdmin(), state="*", text="🚫 Bekor qilish")
 async def cancel_handler(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Bekir qilindi", reply_markup=admin_keyboards)

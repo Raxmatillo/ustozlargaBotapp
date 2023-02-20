@@ -18,3 +18,7 @@ class ImloState(StatesGroup):
 
 class WikipediaState(StatesGroup):
     startWikipedia = State()
+
+
+class ConverterState(StatesGroup):
+    get_file = State()
