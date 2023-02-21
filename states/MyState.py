@@ -22,3 +22,7 @@ class WikipediaState(StatesGroup):
 
 class ConverterState(StatesGroup):
     get_file = State()
+
+
+class QRcodeState(StatesGroup):
+    get_image = State()

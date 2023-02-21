@@ -15,10 +15,11 @@ from keyboards.default.dashboardKeyboard import cancel_keyboard
 from keyboards.default.menuKeyboard import menu
 from utils.misc import lotinKiril as lotin_kril
 
-from states.MyState import ImloState, WikipediaState, LotinKiril, SendMessageToAdmin, ConverterState
+from states.MyState import ImloState, WikipediaState, LotinKiril, SendMessageToAdmin, ConverterState, QRcodeState
 
 from data.config import ADMINS
 from utils.misc.converter import convert_docx
+from utils.misc.qr_code__encoder import qr_decode
 from utils.misc.uzwords import words
 
 from difflib import get_close_matches
@@ -42,6 +43,33 @@ wikipedia.set_lang("uz")
 async def cancel_all_state(message: types.Message, state: FSMContext):
     await message.answer("Bekor qilindi", reply_markup=menu)
     await state.finish()
+
+
+
+
+
+@dp.message_handler(text="QR kod o'qish")
+async def read_qrcode(message: types.Message):
+    await message.answer("QR kod rasm yuboring")
+    await QRcodeState.get_image.set()
+
+@dp.message_handler(state=QRcodeState.get_image, content_types='photo')
+async def qr_read_image(message: types.Message, state: FSMContext):
+    image_path = f"media/{message.from_user.id}.png"
+    await message.photo[-1].download(destination=image_path)
+    data = qr_decode(image_path)
+    await message.reply(data, disable_web_page_preview=True)
+    if os.path.exists(image_path):
+        os.remove(image_path)
+    await state.finish()
+
+
+@dp.message_handler(state=QRcodeState.get_image, content_types=['any', 'document', 'contact', 'video', 'sticker', 'audio', 'gif', 'emoji'])
+async def unknown_qrcode(message: types.Message):
+    await message.answer("Noto'g'ri amal!")
+    await read_qrcode(message)
+
+
 
 @dp.message_handler(text="PDF -> Word")
 async def converter(message: types.Message):
@@ -69,7 +97,7 @@ async def convert_file(message: types.Message, state: FSMContext):
 
 
 
-@dp.message_handler(state=ConverterState.get_file, content_types=['any', 'photo', 'video', 'sticker', 'audio', 'gif', 'emoji'])
+@dp.message_handler(state=ConverterState.get_file, content_types=['any', 'photo', 'contact', 'video', 'sticker', 'audio', 'gif', 'emoji'])
 async def convert_file2(message: types.Message, state: FSMContext):
     await message.answer("Noto'g'ri format! <b>pdf</b> fayl yuboring", parse_mode='HTML')
 
@@ -81,7 +109,7 @@ async def wikipediaInfo(message: types.Message):
 
 @dp.message_handler(state=WikipediaState.startWikipedia)
 async def wikipedia_send(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia', 'PDF -> Word']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia', 'PDF -> Word', 'QR kod o\'qish']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)
@@ -99,6 +127,8 @@ async def wikipedia_send(message: types.Message, state: FSMContext):
             await wikipediaInfo(message)
         elif message.text == "PDF -> Word":
             await converter(message)
+        elif message.text == 'QR kod o\'qish':
+            await read_qrcode(message)
         else:
             await wikipediaInfo(message)
     else:
@@ -133,7 +163,7 @@ async def infoImlo(message: types.Message):
 
 @dp.message_handler(state=ImloState.startImlo)
 async def checkImlo(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia', 'PDF -> Word']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia', 'PDF -> Word', 'QR kod o\'qish']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)
@@ -151,6 +181,8 @@ async def checkImlo(message: types.Message, state: FSMContext):
             await wikipediaInfo(message)
         elif message.text == 'PDF -> Word':
             await converter(message)
+        elif message.text == 'QR kod o\'qish':
+            await read_qrcode(message)
         else:
             await infoImlo(message)
     else:
@@ -185,7 +217,7 @@ async def bot_echo_lotinKiril(message: types.Message):
 
 @dp.message_handler(state=LotinKiril.startLotinKiril)
 async def convert(message: types.Message, state: FSMContext):
-    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia', 'PDF -> Word']:
+    if message.text in ["/start", "/help", "📝 Xabar yuborish", "🔁 Xatosiz o'girish", "🌐 Tarjima qiling", "📌 Reklama", "📊 Statistika", '✅ Imlo-Xatoni aniqlash', '📕 Wikipedia', 'PDF -> Word', 'QR kod o\'qish']:
         await state.finish()
         if message.text == "📝 Xabar yuborish":
             await get_user_message(message)
@@ -203,6 +235,8 @@ async def convert(message: types.Message, state: FSMContext):
             await wikipediaInfo(message)
         elif message.text == 'PDF -> Word':
             await converter(message)
+        elif message.text == 'QR kod o\'qish':
+            await read_qrcode(message)
         else:
             await bot_echo_lotinKiril(message)
     else:
