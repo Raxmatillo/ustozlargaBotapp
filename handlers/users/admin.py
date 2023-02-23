@@ -33,7 +33,10 @@ async def send_reklama(message: types.Message, state: FSMContext):
         elif message.video:
             await bot.send_video(chat_id=user_id, video=message.video.file_id, caption=message.caption)
         else:
-            await bot.send_message(chat_id=user_id, text=message.text, disable_web_page_preview=True)
+            try:
+                await bot.send_message(chat_id=user_id, text=message.text, disable_web_page_preview=True)
+            except Exception as e:
+                print(e)
         await asyncio.sleep(0.05)
     await message.answer("Reklama yuborildi !")
     await state.finish()
